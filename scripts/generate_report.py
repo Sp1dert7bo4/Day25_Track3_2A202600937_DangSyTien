@@ -33,8 +33,11 @@ def main() -> None:
         "Explain what failed, why the fallback path worked or did not work, and what you would change before production.",
     ]
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(args.out).write_text("\n".join(lines))
-    print(f"wrote {args.out}")
+    if Path(args.out).exists() and len(Path(args.out).read_text().splitlines()) > 50:
+        print(f"wrote {args.out} (preserved manual edits)")
+    else:
+        Path(args.out).write_text("\n".join(lines))
+        print(f"wrote {args.out}")
 
 
 if __name__ == "__main__":
